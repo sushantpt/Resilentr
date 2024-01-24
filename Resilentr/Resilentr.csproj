@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Title>Resilentr</Title>
+    <Authors>SushantPant</Authors>
+	  <Description>
+		  Resilentr is a powerful tool designed for easy integration into your ASP.NET Core Web API projects.
+		  This attribute, compatible with .NET 8, offers flexible error-handling modes for individual endpoints:
+		  - Loud: Throw loud exceptions on errors.
+		  - Silent: Doesn't throw any error.
+		  - Default: Utilize default ASP.NET Core error handling.
+		  - Faulted: Mark the endpoint as "faulted" regardless of execution status.
+	  </Description>
+	  <PackageId>Resilentr</PackageId>
+	  <Version>1.0.0</Version>
+	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+    <PackageReference Include="Microsoft.AspNetCore.Routing.Abstractions" Version="2.2.0" />
+  </ItemGroup>
+
+</Project>
