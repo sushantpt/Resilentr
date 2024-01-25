@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.Logging;
 using Resilentr.src.Common;
 using Resilentr.src.Resilentr.Client;
 using System.Net;
@@ -7,9 +8,10 @@ using System.Reflection;
 
 namespace Resilentr.src.Resilentr.Middleware
 {
-    public class ResilentrMiddleware(RequestDelegate next) 
+    public class ResilentrMiddleware(RequestDelegate next, ILogger<ResilentrMiddleware> logger) 
     {
         private readonly RequestDelegate _next = next;
+        private readonly ILogger<ResilentrMiddleware> _logger = logger;
 
         public async Task Invoke(HttpContext context)
         {
@@ -27,8 +29,12 @@ namespace Resilentr.src.Resilentr.Middleware
                         {
                             await _next(context);
                         }
-                        catch {
+                        catch(Exception e) {
                             await context.Response.WriteAsync($"{customErrorMessage}");
+                            _logger.LogError(
+                                $"Endpoint:{context.Features.Get<IEndpointFeature>()?.Endpoint} Attribute:Silent. Custom error message: {customErrorMessage}. Custom Response status: {(int)statusCode} " +
+                                $"Exception message: {e.Message} " +
+                                $"Inner exception: {e.InnerException?.Message ?? "N/a"}");
                         }
                         break;
 
@@ -41,6 +47,10 @@ namespace Resilentr.src.Resilentr.Middleware
                         {
                             context.Response.StatusCode = (int)statusCode;
                             await context.Response.WriteAsync($"{customErrorMessage ?? e.Message}");
+                            _logger.LogError(
+                                $"Endpoint:{context.Features.Get<IEndpointFeature>()?.Endpoint} Attribute:Loud. Custom error message: {customErrorMessage}. Custom Response status: {(int)statusCode} " +
+                                $"Exception message: {e.Message} " +
+                                $"Inner exception: {e.InnerException?.Message ?? "N/a"}");
                         }
                         break;
 
@@ -49,17 +59,24 @@ namespace Resilentr.src.Resilentr.Middleware
                         {
                             await _next(context);
                         }
-                        catch (Exception)
+                        catch (Exception e)
                         {
                             context.Response.StatusCode = (int)statusCode;
                             await context.Response.WriteAsync($"{customErrorMessage}");
+                            _logger.LogError(
+                                $"Endpoint:{context.Features.Get<IEndpointFeature>()?.Endpoint} Attribute:Default. Custom error message: {customErrorMessage}. Custom Response status: {(int)statusCode} " +
+                                $"Exception message: {e.Message} " +
+                                $"Inner exception: {e.InnerException?.Message ?? "N/a"}");
                             throw;
                         }
                         break;
 
-                    case AttributeProperty.Faulted:;
+                    case AttributeProperty.Faulted:
                         context.Response.StatusCode = 500;
-                        throw new Exception($"{customErrorMessage}");
+                        await context.Response.WriteAsync($"{customErrorMessage ?? "Faulted API Endpoint"}");
+                        _logger.LogError(
+                            $"Endpoint:{context.Features.Get<IEndpointFeature>()?.Endpoint} Attribute.Faulted. Custom error message: {customErrorMessage ?? "Faulted API Endpoint"}. Custom Response status: {(int)statusCode}");
+                        throw new Exception($"{customErrorMessage ?? "Faulted API Endpoint"}");
 
                     default:
                         context.Response.StatusCode = (int)statusCode;
