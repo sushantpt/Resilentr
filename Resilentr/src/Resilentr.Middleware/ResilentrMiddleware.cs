@@ -73,7 +73,6 @@ namespace Resilentr.src.Resilentr.Middleware
 
                     case AttributeProperty.Faulted:
                         context.Response.StatusCode = 500;
-                        await context.Response.WriteAsync($"{customErrorMessage ?? "Faulted API Endpoint"}");
                         _logger.LogError(
                             $"Endpoint:{context.Features.Get<IEndpointFeature>()?.Endpoint} Attribute.Faulted. Custom error message: {customErrorMessage ?? "Faulted API Endpoint"}. Custom Response status: {(int)statusCode}");
                         throw new Exception($"{customErrorMessage ?? "Faulted API Endpoint"}");
