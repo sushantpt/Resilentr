@@ -62,7 +62,6 @@ namespace Resilentr.src.Resilentr.Middleware
                         catch (Exception e)
                         {
                             context.Response.StatusCode = (int)statusCode;
-                            await context.Response.WriteAsync($"{customErrorMessage}");
                             _logger.LogError(
                                 $"Endpoint:{context.Features.Get<IEndpointFeature>()?.Endpoint} Attribute:Default. Custom error message: {customErrorMessage}. Custom Response status: {(int)statusCode} " +
                                 $"Exception message: {e.Message} " +

@@ -6,15 +6,15 @@
     <Nullable>enable</Nullable>
     <Title>Resilentr</Title>
     <Authors>SushantPant</Authors>
-	  <Description>Resilentr is a powerful tool designed for easy integration into your ASP.NET Core Web API projects. This attribute, compatible with .NET 8, offers flexible error-handling modes for individual endpoints: 1. Loud: Throw loud exceptions on errors. 2. Silent: Doesn't throw any error. 3. Default: Utilize default ASP.NET Core error handling. 4. Faulted: Mark the endpoint as "faulted" regardless of execution status.	  </Description>
+	  <Description>Resilentr is a library designed for easy integration into your ASP.NET Core Web API projects. This attribute, compatible with .NET 8, offers flexible error-handling modes for individual endpoints: 1. Loud: Throw loud exceptions on errors. 2. Silent: Doesn't throw any error. 3. Default: Utilize default ASP.NET Core error handling. 4. Faulted: Mark the endpoint as "faulted" regardless of execution status.	  </Description>
 	  <PackageId>Resilentr</PackageId>
-	  <Version>1.1.0</Version>
+	  <Version>1.2.1</Version>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	  <PackageIcon>Resilentr.png</PackageIcon>
 	  <PackageProjectUrl></PackageProjectUrl>
 	  <RepositoryUrl>https://github.com/sushantpt/Resilentr</RepositoryUrl>
 	  <PackageTags>error-handling; endpoint-error-handling; resilentr; middleware</PackageTags>
-	  <PackageReleaseNotes>Added logger.</PackageReleaseNotes>
+	  <PackageReleaseNotes>Attribute status causing TypeError issue fixed on all attributes.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
